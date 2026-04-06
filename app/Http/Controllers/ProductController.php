@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('user')->paginate(10);
 
         return view('product.index', compact('products'));
     }
@@ -19,9 +19,11 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
-            'quantity' => 'required|integer',
+            'qty'      => 'required|integer',
             'price'    => 'required|numeric',
             'user_id'  => 'required|exists:users,id',
+        ], [], [
+            'qty' => 'quantity',
         ]);
 
         $product = Product::create($validated);
@@ -48,11 +50,16 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        // Policy: hanya pemilik produk yang boleh update
+        $this->authorize('update', $product);
+
         $validated = $request->validate([
             'name'     => 'sometimes|string|max:255',
-            'quantity' => 'sometimes|integer',
+            'qty'      => 'sometimes|integer',
             'price'    => 'sometimes|numeric',
             'user_id'  => 'sometimes|exists:users,id',
+        ], [], [
+            'qty' => 'quantity',
         ]);
 
         $product->update($validated);
@@ -71,6 +78,9 @@ class ProductController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
+
+        // Policy: pemilik boleh hapus miliknya; admin boleh hapus semua
+        $this->authorize('delete', $product);
 
         $product->delete();
 

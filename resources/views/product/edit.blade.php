@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
                     {{-- Header --}}
@@ -16,16 +16,17 @@
                         </a>
 
                         <div>
-                            <h2 class="text-2xl font-bold tracking-tight">Add Product</h2>
+                            <h2 class="text-2xl font-bold tracking-tight">Edit Product</h2>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                                Fill in the details to add a new product
+                                Updating <span class="font-medium">{{ $product->name }}</span>
                             </p>
                         </div>
                     </div>
 
                     {{-- Form --}}
-                    <form action="{{ route('product.store') }}" method="POST" class="space-y-5">
+                    <form action="{{ route('product.update', $product->id) }}" method="POST" class="space-y-5">
                         @csrf
+                        @method('PUT')
 
                         {{-- Name --}}
                         <div>
@@ -34,11 +35,10 @@
                                 Product Name <span class="text-red-500">*</span>
                             </label>
 
-                            <input type="text" id="name" name="name" value="{{ old('name') }}"
-                                   placeholder="e.g. Wireless Headphones"
+                            <input type="text" id="name" name="name" value="{{ old('name', $product->name) }}"
                                    class="w-full px-4 py-2.5 rounded-lg border text-sm
                                    {{ $errors->has('name') ? 'border-red-400 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
-                                   text-gray-900 dark:text-gray-100 placeholder-gray-400
+                                   text-gray-900 dark:text-gray-100
                                    focus:ring-2 focus:ring-indigo-500 transition">
 
                             @error('name')
@@ -56,7 +56,7 @@
                                     Quantity <span class="text-red-500">*</span>
                                 </label>
 
-                                <input type="number" id="qty" name="qty" value="{{ old('qty') }}"
+                                <input type="number" id="qty" name="qty" value="{{ old('qty', $product->qty) }}"
                                        min="0"
                                        class="w-full px-4 py-2.5 rounded-lg border text-sm transition-all
                                        {{ $errors->has('qty') ? 'border-red-500 bg-red-50 dark:bg-red-500/10' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
@@ -75,8 +75,8 @@
                                     Price (Rp) <span class="text-red-500">*</span>
                                 </label>
 
-                                <input type="number" id="price" name="price" value="{{ old('price') }}"
-                                       min="0"
+                                <input type="number" id="price" name="price" value="{{ old('price', $product->price) }}"
+                                       min="0" step="0.01"
                                        class="w-full px-4 py-2.5 rounded-lg border text-sm
                                        {{ $errors->has('price') ? 'border-red-400 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
                                        text-gray-900 dark:text-gray-100
@@ -106,7 +106,7 @@
 
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}"
-                                        {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                        {{ old('user_id', $product->user_id) == $user->id ? 'selected' : '' }}>
                                         {{ $user->name }}
                                     </option>
                                 @endforeach
@@ -118,16 +118,29 @@
                         </div>
 
                         {{-- Actions --}}
-                        <div class="flex items-center justify-end gap-3 pt-4">
-                            <a href="{{ route('product.index') }}"
-                               class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                                Cancel
-                            </a>
+                        <div class="flex items-center justify-between gap-3 pt-4">
+                            
+                            <form id="delete-product-form" action="{{ route('product.delete', $product->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        onclick="return confirm('Are you sure you want to delete this product?')"
+                                        class="text-sm font-medium text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition">
+                                    Delete Product
+                                </button>
+                            </form>
 
-                            <button type="submit"
-                                    class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
-                                Save Product
-                            </button>
+                            <div class="flex items-center gap-3">
+                                <a href="{{ route('product.index') }}"
+                                   class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                    Cancel
+                                </a>
+
+                                <button type="submit"
+                                        class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
+                                    Update Product
+                                </button>
+                            </div>
                         </div>
 
                     </form>
