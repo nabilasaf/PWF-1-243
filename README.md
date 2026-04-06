@@ -46,3 +46,10 @@ Database
 
 
 ![Database](foto/Database.png)
+
+
+#Pertemuan Kelima
+
+Screenshoot hasil dari Gate dan Policy
+
+![Gate dan Policy](foto/Gate%20dan%20Policy.png)
