@@ -53,3 +53,12 @@ Database
 Screenshoot hasil dari Gate dan Policy
 
 ![Gate dan Policy](foto/Gate%20dan%20Policy.png)
+
+
+#Pertemuan Keenam
+
+Screenshoot validasi store dan update.
+
+![Gate dan Policy](foto/validasi%20_Add.png)
+
+![Gate dan Policy](foto/validasi%20_Update.png)

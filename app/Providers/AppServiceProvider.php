@@ -27,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
             return $user->role === 'admin';
         });
 
+        // Gate: hanya admin yang bisa export product (Kelas B)
+        Gate::define('export-product', function ($user) {
+            return $user->role === 'admin';
+        });
+
         // Daftarkan ProductPolicy
         Gate::policy(Product::class, ProductPolicy::class);
     }

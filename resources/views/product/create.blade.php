@@ -23,26 +23,38 @@
                         </div>
                     </div>
 
+                    {{-- Validation Error Summary --}}
+                    @if ($errors->any())
+                        <div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 backdrop-blur-sm">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="text-sm font-bold tracking-tight" style="color: #ef4444 !important;">Periksa kembali inputan Anda:</span>
+                            </div>
+                            <ul class="space-y-1">
+                                @foreach ($errors->all() as $error)
+                                    <li class="text-xs font-bold ml-7 list-disc" style="color: #f87171 !important;">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     {{-- Form --}}
-                    <form action="{{ route('product.store') }}" method="POST" class="space-y-5">
+                    <form action="{{ route('product.store') }}" method="POST" class="space-y-5" novalidate>
                         @csrf
 
                         {{-- Name --}}
-                        <div>
-                            <label for="name"
-                                   class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <div class="space-y-2">
+                            <label for="name" class="block text-sm font-medium text-gray-300">
                                 Product Name <span class="text-red-500">*</span>
                             </label>
 
-                            <input type="text" id="name" name="name" value="{{ old('name') }}"
-                                   placeholder="e.g. Wireless Headphones"
-                                   class="w-full px-4 py-2.5 rounded-lg border text-sm
-                                   {{ $errors->has('name') ? 'border-red-400 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
-                                   text-gray-900 dark:text-gray-100 placeholder-gray-400
-                                   focus:ring-2 focus:ring-indigo-500 transition">
-
+                            <input type="text" name="name" id="name" value="{{ old('name') }}"
+                                   class="w-full px-4 py-2.5 rounded-lg border @error('name') border-red-500 @else border-gray-300 @enderror bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                   placeholder="e.g. Wireless Headphones">
                             @error('name')
-                                <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
+                                <p class="mt-1.5 text-sm font-bold" style="color: #ef4444 !important;">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -50,70 +62,54 @@
                         <div class="grid grid-cols-2 gap-4">
 
                             {{-- Quantity --}}
-                            <div>
-                                <label for="qty"
-                                       class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            <div class="space-y-2">
+                                <label for="qty" class="block text-sm font-medium text-gray-300">
                                     Quantity <span class="text-red-500">*</span>
                                 </label>
 
                                 <input type="number" id="qty" name="qty" value="{{ old('qty') }}"
                                        min="0"
-                                       class="w-full px-4 py-2.5 rounded-lg border text-sm transition-all
-                                       {{ $errors->has('qty') ? 'border-red-500 bg-red-50 dark:bg-red-500/10' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
-                                       text-gray-900 dark:text-gray-100
-                                       focus:ring-2 focus:ring-indigo-500">
+                                       class="w-full px-4 py-2.5 rounded-lg border @error('qty') border-red-500 @else border-gray-300 @enderror bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                       placeholder="Enter quantity">
 
                                 @error('qty')
-                                    <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
+                                     <p class="mt-1.5 text-sm font-bold" style="color: #ef4444 !important;">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             {{-- Price --}}
-                            <div>
-                                <label for="price"
-                                       class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            <div class="space-y-2">
+                                <label for="price" class="block text-sm font-medium text-gray-300">
                                     Price (Rp) <span class="text-red-500">*</span>
                                 </label>
 
-                                <input type="number" id="price" name="price" value="{{ old('price') }}"
-                                       min="0"
-                                       class="w-full px-4 py-2.5 rounded-lg border text-sm
-                                       {{ $errors->has('price') ? 'border-red-400 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
-                                       text-gray-900 dark:text-gray-100
-                                       focus:ring-2 focus:ring-indigo-500 transition">
-
-                                @error('price')
-                                    <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
-                                @enderror
+                                <input type="number" step="0.01" id="price" name="price" value="{{ old('price') }}"
+                                        min="0"
+                                        class="w-full px-4 py-2.5 rounded-lg border @error('price') border-red-500 @else border-gray-300 @enderror bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                                        placeholder="0.00">
+                                 @error('price')
+                                     <p class="mt-1.5 text-sm font-bold" style="color: #ef4444 !important;">{{ $message }}</p>
+                                 @enderror
                             </div>
 
                         </div>
 
-                        {{-- User --}}
-                        <div>
-                            <label for="user_id"
-                                   class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{-- User/Owner --}}
+                        <div class="space-y-2">
+                            <label for="user_id" class="block text-sm font-medium text-gray-300">
                                 Owner <span class="text-red-500">*</span>
                             </label>
-
-                            <select id="user_id" name="user_id"
-                                    class="w-full px-4 py-2.5 rounded-lg border text-sm
-                                    {{ $errors->has('user_id') ? 'border-red-400 bg-red-50 dark:bg-red-900/20' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700' }}
-                                    text-gray-900 dark:text-gray-100
-                                    focus:ring-2 focus:ring-indigo-500 transition">
-
-                                <option value="">Select Owner</option>
-
+                                <select name="user_id" id="user_id"
+                                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer">
+                                <option value="" disabled selected>Select Owner</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                                         {{ $user->name }}
                                     </option>
                                 @endforeach
                             </select>
-
                             @error('user_id')
-                                <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
+                                <p class="mt-1.5 text-xs" style="color: #ef4444 !important;">{{ $message }}</p>
                             @enderror
                         </div>
 
