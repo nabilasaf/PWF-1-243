@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Gate: hanya admin yang bisa mengelola product
-        Gate::define('manage-product', function ($user) {
+        Gate::define('manage-products', function ($user) {
             return $user->role === 'admin';
         });
 

@@ -62,3 +62,11 @@ Screenshoot validasi store dan update.
 ![Gate dan Policy](foto/validasi%20_Add.png)
 
 ![Gate dan Policy](foto/validasi%20_Update.png)
+
+
+
+#Pertemuan Ketujuh
+
+View Detail Product.
+
+![View Detail Product](foto/View.png)
