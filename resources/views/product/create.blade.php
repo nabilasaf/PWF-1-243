@@ -4,7 +4,6 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    {{-- Header --}}
                     <div class="flex items-center gap-3 mb-6">
                         <a href="{{ route('product.index') }}"
                            class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
@@ -23,7 +22,6 @@
                         </div>
                     </div>
 
-                    {{-- Validation Error Summary --}}
                     @if ($errors->any())
                         <div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 backdrop-blur-sm">
                             <div class="flex items-center gap-2 mb-3">
@@ -40,14 +38,12 @@
                         </div>
                     @endif
 
-                    {{-- Form --}}
                     <form action="{{ route('product.store') }}" method="POST" class="space-y-5" novalidate>
                         @csrf
 
-                        {{-- Name --}}
                         <div class="space-y-2">
                             <label for="name" class="block text-sm font-medium text-gray-300">
-                                Product Name <span class="text-red-500">*</span>
+                                Nama Produk <span class="text-red-500">*</span>
                             </label>
 
                             <input type="text" name="name" id="name" value="{{ old('name') }}"
@@ -58,35 +54,50 @@
                             @enderror
                         </div>
 
-                        {{-- Quantity & Price --}}
+                        <div class="space-y-2">
+                            <label for="category_id" class="block text-sm font-medium text-gray-300">
+                                Kategori <span class="text-red-500">*</span>
+                            </label>
+                            <select name="category_id" id="category_id"
+                                    class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Kategori --</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <p class="mt-1.5 text-sm font-bold" style="color: #ef4444 !important;">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="grid grid-cols-2 gap-4">
 
-                            {{-- Quantity --}}
                             <div class="space-y-2">
                                 <label for="qty" class="block text-sm font-medium text-gray-300">
                                     Quantity <span class="text-red-500">*</span>
                                 </label>
 
-                                <input type="number" id="qty" name="qty" value="{{ old('qty') }}"
+                                <input type="number" id="qty" name="qty" value="{{ old('qty', 0) }}"
                                        min="0"
                                        class="w-full px-4 py-2.5 rounded-lg border @error('qty') border-red-500 @else border-gray-300 @enderror bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                                       placeholder="Enter quantity">
+                                       placeholder="0">
 
                                 @error('qty')
                                      <p class="mt-1.5 text-sm font-bold" style="color: #ef4444 !important;">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            {{-- Price --}}
                             <div class="space-y-2">
                                 <label for="price" class="block text-sm font-medium text-gray-300">
                                     Price (Rp) <span class="text-red-500">*</span>
                                 </label>
 
-                                <input type="number" step="0.01" id="price" name="price" value="{{ old('price') }}"
+                                <input type="number" step="0.01" id="price" name="price" value="{{ old('price', 0) }}"
                                         min="0"
                                         class="w-full px-4 py-2.5 rounded-lg border @error('price') border-red-500 @else border-gray-300 @enderror bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                                        placeholder="0.00">
+                                        placeholder="0">
                                  @error('price')
                                      <p class="mt-1.5 text-sm font-bold" style="color: #ef4444 !important;">{{ $message }}</p>
                                  @enderror
@@ -94,26 +105,6 @@
 
                         </div>
 
-                        {{-- User/Owner --}}
-                        <div class="space-y-2">
-                            <label for="user_id" class="block text-sm font-medium text-gray-300">
-                                Owner <span class="text-red-500">*</span>
-                            </label>
-                                <select name="user_id" id="user_id"
-                                        class="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer">
-                                <option value="" disabled selected>Select Owner</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('user_id')
-                                <p class="mt-1.5 text-xs" style="color: #ef4444 !important;">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        {{-- Actions --}}
                         <div class="flex items-center justify-end gap-3 pt-4">
                             <a href="{{ route('product.index') }}"
                                class="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition">

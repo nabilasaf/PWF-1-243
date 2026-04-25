@@ -70,3 +70,22 @@ Screenshoot validasi store dan update.
 View Detail Product.
 
 ![View Detail Product](foto/View.png)
+
+
+
+#UCP 1
+
+Category.
+![Category](foto/Category.png)
+
+
+Add Category.
+![View Detail Product](foto/Add_Category.png)
+
+
+Add Product.
+![Add Category](foto/Add_Product.png)
+
+
+Dashboard New.
+![Dashboard New](foto/Dashboard_New.png)

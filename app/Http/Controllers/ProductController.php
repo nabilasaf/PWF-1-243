@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,16 +23,18 @@ class ProductController extends Controller
     public function create()
     {
         $users = User::orderBy('name')->get();
-        return view('product.create', compact('users'));
+        $categories = Category::orderBy('name')->get();
+        return view('product.create', compact('users', 'categories'));
     }
 
     // ✅ STORE (pakai Form Request)
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'qty'   => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'name'        => 'required|string|max:255',
+            'category_id' => 'nullable|exists:category,id',
+            'qty'         => 'required|integer|min:1',
+            'price'       => 'required|numeric|min:0',
         ], [
             'name.required'  => 'Nama produk wajib diisi.',
             'name.max'       => 'Nama produk tidak boleh lebih dari 255 karakter.',
