@@ -89,3 +89,44 @@ Add Product.
 
 Dashboard New.
 ![Dashboard New](foto/Dashboard_New.png)
+
+
+#Pertemuan KeSembilan
+
+Testing Postmen
+
+Category
+
+Post
+
+![Post Category](foto/Post_Category.png)
+
+Put
+
+![Put Category](foto/Put_Category.png)
+
+GET
+
+![GET Category](foto/Get_Category.png)
+
+DELETE
+
+![Delete Category](foto/Delete_Category.png)
+
+Product
+
+Post
+
+![Post Product](foto/Post_Product.png)
+
+Put
+
+![Put Product](foto/Put_Product.png)
+
+Get
+
+![Get Product](foto/Get_Product.png)
+
+Delete
+
+![Delete Product](foto/Delete_Product.png)
